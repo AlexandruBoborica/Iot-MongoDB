@@ -1,0 +1,21 @@
+# Virtual Environment
+venv/
+*.pyc
+__pycache__/
+.env
+
+# Conda Environment
+.conda/
+.local/
+*conda*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# MongoDB files
+# Never commit credentials or sensitive data
+.mongorc.js
+dump/
+data/
+logs/
