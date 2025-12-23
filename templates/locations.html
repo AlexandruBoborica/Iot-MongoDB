@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Locations</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+        th { background: #f2f2f2; }
+        .actions form { display: inline; margin: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Locations</h1>
+
+<h2>Add New Location</h2>
+<form method="POST">
+    <select name="company_id" required>
+        <option value="">Select Company</option>
+        {% for c in companies %}
+        <option value="{{ c._id }}">{{ c.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input name="city" placeholder="City" required><br>
+    <input name="street" placeholder="Street" required><br>
+    <input name="building" placeholder="Building" required><br>
+    <input type="number" name="floor" placeholder="Floor" required><br>
+
+    <button type="submit">Add Location</button>
+</form>
+
+<hr>
+
+<h2>Existing Locations</h2>
+<table>
+    <tr>
+        <th>Company</th><th>City</th><th>Street</th><th>Building</th><th>Floor</th><th>Actions</th>
+    </tr>
+    {% for loc in locations %}
+    <tr>
+        <td>{{ loc.company_name }}</td>
+        <td>{{ loc.address.city }}</td>
+        <td>{{ loc.address.street }}</td>
+        <td>{{ loc.address.building }}</td>
+        <td>{{ loc.address.floor }}</td>
+        <td class="actions">
+            <a href="/locations/edit/{{ loc._id }}">Edit</a>
+            <form method="POST" action="/locations/delete/{{ loc._id }}">
+                <button type="submit" onclick="return confirm('Delete this location?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">No locations found.</td></tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

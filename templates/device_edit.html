@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Device</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Edit Device</h1>
+
+<form method="POST">
+    <input name="name" value="{{ device.name }}" placeholder="Device Name" required><br>
+
+    <select name="company_id" required>
+        {% for c in companies %}
+        <option value="{{ c._id }}" {% if c._id == device.companyId %}selected{% endif %}>
+            {{ c.name }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <select name="device_type_id" required>
+        {% for dt in device_types %}
+        <option value="{{ dt._id }}" {% if dt._id == device.deviceTypeId %}selected{% endif %}>
+            {{ dt.name }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <select name="manufacturer_id" required>
+        {% for m in manufacturers %}
+        <option value="{{ m._id }}" {% if m._id == device.manufacturerId %}selected{% endif %}>
+            {{ m.name }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <select name="location_id" required>
+        {% for l in locations %}
+        <option value="{{ l._id }}" {% if l._id == device.locationId %}selected{% endif %}>
+            {{ l.address.city }}, {{ l.address.street }}, {{ l.address.building }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <select name="status">
+        <option value="active" {% if device.status == 'active' %}selected{% endif %}>Active</option>
+        <option value="inactive" {% if device.status == 'inactive' %}selected{% endif %}>Inactive</option>
+    </select><br>
+
+    <button type="submit">Save</button>
+    <a href="{{ url_for('devices_page') }}">Cancel</a>
+</form>
+
+</body>
+</html>

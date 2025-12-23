@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Companies</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+        th { background: #f2f2f2; }
+        .actions form { display: inline; margin: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Companies</h1>
+
+<h2>Add New Company</h2>
+<form method="POST">
+    <input name="name" placeholder="Company Name" required><br>
+    <input name="industry" placeholder="Industry" required><br>
+    <button type="submit">Add Company</button>
+</form>
+
+<hr>
+
+<h2>Existing Companies</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Industry</th>
+        <th>Actions</th>
+    </tr>
+    {% for company in companies %}
+    <tr>
+        <td>{{ company.name }}</td>
+        <td>{{ company.industry }}</td>
+        <td class="actions">
+            <a href="{{ url_for('edit_company', company_id=company._id) }}">Edit</a>
+            <form method="POST" action="{{ url_for('delete_company', company_id=company._id) }}">
+                <button type="submit" onclick="return confirm('Delete this company?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No companies found.</td></tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IoT Fleet Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .btn {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>IoT Fleet Dashboard</h1>
+
+<a class="btn" href="{{ url_for('companies_page') }}">Companies</a>
+<a class="btn" href="{{ url_for('manufacturers_page') }}">Manufacturers</a>
+<a class="btn" href="{{ url_for('locations_page') }}">Locations</a>
+<a class="btn" href="{{ url_for('device_types_page') }}">Device Types</a>
+<a class="btn" href="{{ url_for('devices_page') }}">Devices</a>
+<a class="btn" href="{{ url_for('readings_page') }}">Readings</a>
+
+</body>
+</html>

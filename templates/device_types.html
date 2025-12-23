@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Types</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        table, th, td { border: 1px solid #ccc; }
+        th, td { padding: 10px; text-align: left; }
+        button { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<h1>Device Types</h1>
+
+<h2>Add New Device Type</h2>
+<form method="POST">
+    <input name="name" placeholder="Device Type Name" required><br>
+
+    <select name="manufacturer_id" required>
+        <option value="">Select Manufacturer</option>
+        {% for m in manufacturers %}
+            <option value="{{ m._id }}">{{ m.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input name="metrics" placeholder="Metrics (comma-separated)" required><br>
+
+    <button type="submit">Add Device Type</button>
+</form>
+
+<hr>
+
+<h2>Existing Device Types</h2>
+<table>
+<tr>
+    <th>Name</th>
+    <th>Manufacturer</th>
+    <th>Metrics</th>
+    <th>Actions</th>
+</tr>
+{% for dt in device_types %}
+<tr>
+    <td>{{ dt.name }}</td>
+    <td>
+        {% set m = manufacturers | selectattr('_id', 'equalto', dt.manufacturerId) | first %}
+        {{ m.name if m else 'Unknown' }}
+    </td>
+    <td>{{ dt.metrics | join(', ') }}</td>
+    <td>
+        <a href="{{ url_for('edit_device_type', device_type_id=dt._id) }}">Edit</a>
+        <form method="POST"
+              action="{{ url_for('delete_device_type', device_type_id=dt._id) }}"
+              style="display:inline;">
+            <button type="submit" onclick="return confirm('Delete device type?')">Delete</button>
+        </form>
+    </td>
+</tr>
+{% else %}
+<tr><td colspan="4">No device types found.</td></tr>
+{% endfor %}
+</table>
+
+<br>
+<a href="{{ url_for('index') }}">⬅ Back to dashboard</a>
+
+</body>
+</html>

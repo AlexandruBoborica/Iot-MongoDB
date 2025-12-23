@@ -2,20 +2,18 @@ from bson import ObjectId
 from datetime import datetime, timezone
 
 
-def create_location(db, company_id, street, building, floor, city):
+def create_location(db, company_id, city, street, building, floor):
     location = {
         "companyId": ObjectId(company_id),
         "address": {
+            "city": city,
             "street": street,
             "building": building,
-            "floor": floor,
-            "city": city
+            "floor": floor
         },
         "createdAt": datetime.now(timezone.utc)
     }
-    result = db.locations.insert_one(location)
-    print(f"Inserted location with _id: {result.inserted_id}")
-    return result.inserted_id
+    return db.locations.insert_one(location).inserted_id
 
 
 def read_locations(db, filter={}):

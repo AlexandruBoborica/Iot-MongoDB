@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Reading</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Edit Reading</h1>
+
+<form method="POST">
+    <select name="device_id" required>
+        {% for d in devices %}
+        <option value="{{ d._id }}" {% if reading.deviceId == d._id %}selected{% endif %}>
+            {{ d.name }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <input name="values" 
+           value="{% for k,v in values_dict.items() %}{{ k }}:{{ v }},{% endfor %}" 
+           placeholder="Values (e.g. temperature:23,humidity:50)" required><br>
+
+    <button type="submit">Save</button>
+    <a href="{{ url_for('readings_page') }}">Cancel</a>
+</form>
+
+</body>
+</html>

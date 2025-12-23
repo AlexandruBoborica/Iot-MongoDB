@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Location</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Edit Location</h1>
+
+<form method="POST">
+    <select name="company_id" required>
+        <option value="">Select Company</option>
+        {% for c in companies %}
+        <option value="{{ c._id }}" {% if c._id == location.companyId %}selected{% endif %}>
+            {{ c.name }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <input name="city" value="{{ location.address.city }}" placeholder="City" required><br>
+    <input name="street" value="{{ location.address.street }}" placeholder="Street" required><br>
+    <input name="building" value="{{ location.address.building }}" placeholder="Building" required><br>
+    <input type="number" name="floor" value="{{ location.address.floor }}" placeholder="Floor" required><br>
+
+    <button type="submit">Save</button>
+    <a href="{{ url_for('locations_page') }}">Cancel</a>
+</form>
+
+</body>
+</html>

@@ -1,10 +1,8 @@
 from bson import ObjectId
 from datetime import datetime, timezone
 
-
 def create_device(
     db,
-    device_id,
     name,
     company_id,
     device_type_id,
@@ -14,7 +12,6 @@ def create_device(
     last_reading=None
 ):
     device = {
-        "deviceId": device_id,
         "name": name,
         "companyId": ObjectId(company_id),
         "deviceTypeId": ObjectId(device_type_id),

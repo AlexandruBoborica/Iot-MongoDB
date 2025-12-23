@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manufacturers</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, button { margin: 5px 0; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+        th { background: #f2f2f2; }
+        .actions form { display: inline; margin: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Manufacturers</h1>
+
+<h2>Add New Manufacturer</h2>
+<form method="POST">
+    <input name="name" placeholder="Name" required><br>
+    <input name="country" placeholder="Country" required><br>
+    <button type="submit">Add Manufacturer</button>
+</form>
+
+<hr>
+
+<h2>Existing Manufacturers</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Actions</th>
+    </tr>
+    {% for m in manufacturers %}
+    <tr>
+        <td>{{ m.name }}</td>
+        <td>{{ m.country }}</td>
+        <td class="actions">
+            <a href="/manufacturers/edit/{{ m._id }}">Edit</a>
+            <form method="POST" action="/manufacturers/delete/{{ m._id }}">
+                <button type="submit" onclick="return confirm('Delete this manufacturer?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No manufacturers found.</td></tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

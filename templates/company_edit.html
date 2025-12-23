@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Company</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, button { margin: 5px 0; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Edit Company</h1>
+
+<form method="POST">
+    <input name="name" value="{{ company.name }}" placeholder="Company Name" required><br>
+    <input name="industry" value="{{ company.industry }}" placeholder="Industry" required><br>
+    <button type="submit">Save</button>
+    <a href="{{ url_for('companies_page') }}">Cancel</a>
+</form>
+
+</body>
+</html>

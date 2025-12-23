@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Readings</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+        th { background: #f2f2f2; }
+        .actions form { display: inline; margin: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Readings</h1>
+
+<h2>Add New Reading</h2>
+<form method="POST">
+    <select name="device_id" required>
+        <option value="">Select Device</option>
+        {% for d in devices %}
+        <option value="{{ d._id }}">{{ d.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input name="values" placeholder="Values (e.g. temperature:23,humidity:50)" required><br>
+
+    <button type="submit">Add Reading</button>
+</form>
+
+<hr>
+
+<h2>Existing Readings</h2>
+<table>
+    <tr>
+        <th>Device</th><th>Values</th><th>Timestamp</th><th>Actions</th>
+    </tr>
+    {% for r in readings %}
+    <tr>
+        <td>{{ r.device }}</td>
+        <td>
+            {% for k, v in r.read_values.items() %}
+            {{ k }}: {{ v }}<br>
+            {% endfor %}
+        </td>
+        <td>{{ r.timestamp }}</td>
+        <td class="actions">
+            <a href="{{ url_for('edit_reading', reading_id=r.id) }}">Edit</a>
+            <form method="POST" action="{{ url_for('delete_reading', reading_id=r.id) }}">
+                <button type="submit" onclick="return confirm('Delete this reading?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No readings found.</td></tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Devices</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, select, button { margin: 5px 0; padding: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; }
+        th { background: #f2f2f2; }
+        .actions form { display: inline; margin: 0; }
+    </style>
+</head>
+<body>
+
+<h1>Devices</h1>
+
+<h2>Add New Device</h2>
+<form method="POST">
+    <input name="name" placeholder="Device Name" required><br>
+
+    <select name="company_id" required>
+        <option value="">Select Company</option>
+        {% for c in companies %}
+        <option value="{{ c._id }}">{{ c.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <select name="device_type_id" required>
+        <option value="">Select Device Type</option>
+        {% for dt in device_types %}
+        <option value="{{ dt._id }}">{{ dt.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <select name="manufacturer_id" required>
+        <option value="">Select Manufacturer</option>
+        {% for m in manufacturers %}
+        <option value="{{ m._id }}">{{ m.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <select name="location_id" required>
+        <option value="">Select Location</option>
+        {% for l in locations %}
+        <option value="{{ l._id }}">
+            {{ l.address.city }}, {{ l.address.street }}, {{ l.address.building }}
+        </option>
+        {% endfor %}
+    </select><br>
+
+    <select name="status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+    </select><br>
+
+    <button type="submit">Add Device</button>
+</form>
+
+<hr>
+
+<h2>Existing Devices</h2>
+<table>
+    <tr>
+        <th>Name</th><th>Company</th><th>Type</th><th>Manufacturer</th><th>Location</th><th>Status</th><th>Actions</th>
+    </tr>
+    {% for d in devices %}
+    <tr>
+        <td>{{ d.name }}</td>
+        <td>{{ d.company }}</td>
+        <td>{{ d.device_type }}</td>
+        <td>{{ d.manufacturer }}</td>
+        <td>{{ d.location }}</td>
+        <td>{{ d.status }}</td>
+        <td class="actions">
+            <a href="{{ url_for('edit_device', device_id=d.id) }}">Edit</a>
+            <form method="POST" action="{{ url_for('delete_device', device_id=d.id) }}">
+                <button type="submit" onclick="return confirm('Delete this device?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7">No devices found.</td></tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
