@@ -10,14 +10,43 @@ from db import get_db
 from companies import read_companies, create_company
 from manufacturers import read_manufacturers, create_manufacturer
 from bson import ObjectId
+from analytics import devices_per_location_aggregation, avg_readings_per_device_aggregation,avg_readings_per_device_type_aggregation
+from indexes import create_indexes
+from performance import run_performance_test
+
 
 
 app = Flask(__name__)
 my_database = get_db()
 
-@app.route("/")
+create_indexes(my_database)
+
+@app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    analytics = request.args.get("analytics")
+
+    results = []
+    analytics_title = None
+
+    if analytics == "devices_per_location":
+        analytics_title = "Devices per Location"
+        results = devices_per_location_aggregation(my_database)
+
+    elif analytics == "avg_readings_per_device":
+        analytics_title = "Average Readings per Device"
+        results = avg_readings_per_device_aggregation(my_database)
+
+    elif analytics == "avg_readings_per_device_type":
+        analytics_title = "Average Readings per Device Type"
+        results = avg_readings_per_device_type_aggregation(my_database)
+
+    return render_template(
+        "index.html",
+        analytics_type=analytics,
+        analytics_title=analytics_title,
+        results=results
+    )
+
 
 print("Starting Flask app...")
 
@@ -434,9 +463,14 @@ def edit_manufacturer(manufacturer_id):
     )
 
 
+@app.route("/performance")
+def performance_page():
+    results = run_performance_test(my_database)
 
-
-
+    return render_template(
+        "performance.html",
+        results=results
+    )
 
 
 # =======================
